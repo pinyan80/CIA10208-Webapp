@@ -291,15 +291,14 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 		// 新增
 		MealsVO mealsVO1 = new MealsVO();
 		
-//		mealsVO1.setMealPic(imagebyte);
 		mealsVO1.setMealPicInfo("草莓吐司");
 		mealsVO1.setMealsId(1);
 		dao.insert(mealsVO1);
 
 		// 修改
 		MealsVO mealsVO2 = new MealsVO();
+		
 		mealsVO2.setMealPicId(1);
-//		mealsVO2.setMealPic(imageBytes);
 		mealsVO2.setMealPicInfo("三明治");
 		mealsVO2.setMealsId(3);
 		dao.update(mealsVO2);

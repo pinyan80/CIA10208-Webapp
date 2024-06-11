@@ -9,4 +9,13 @@
     <welcome-file>default.jsp</welcome-file>
     <welcome-file>default.htm</welcome-file>
   </welcome-file-list>
+  
+  <servlet>
+		<servlet-name>MealsServlet</servlet-name>
+		<servlet-class>com.meals.controller.MealsServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MealsServlet</servlet-name>
+		<url-pattern>/meals/meals.do</url-pattern>
+	</servlet-mapping>
 </web-app>
