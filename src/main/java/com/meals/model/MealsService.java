@@ -10,12 +10,12 @@ public class MealsService {
 		dao = new MealsJDBCDAO();
 	}
 
-	public MealsVO addMeals(Integer mealPicId, Byte mealPic, String mealPicInfo,
+	public MealsVO addMeals(byte[] mealPic, String mealPicInfo,
 		   Integer mealsId) {
 
 		MealsVO mealsVO = new MealsVO();
 
-		mealsVO.setMealPicId(mealPicId);
+
 		mealsVO.setMealPic(mealPic);
 		mealsVO.setMealPicInfo(mealPicInfo);
 		mealsVO.setMealsId(mealsId);
@@ -24,7 +24,7 @@ public class MealsService {
 		return mealsVO;
 	}
 
-	public MealsVO updateMeals(Integer mealPicId, Byte mealPic, String mealPicInfo,
+	public MealsVO updateMeals(Integer mealPicId, byte[] mealPic, String mealPicInfo,
 			   Integer mealsId) {
 
 		MealsVO mealsVO = new MealsVO();

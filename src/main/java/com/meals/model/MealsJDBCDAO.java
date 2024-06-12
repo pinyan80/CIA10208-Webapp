@@ -5,20 +5,20 @@ import java.sql.*;
 
 public class MealsJDBCDAO implements MealsDAO_interface {
 	String driver = "com.mysql.cj.jdbc.Driver";
-	String url = "jdbc:mysql://localhost:3306/db01?serverTimezone=Asia/Taipei";
+	String url = "jdbc:mysql://localhost:3306/morningcode?serverTimezone=Asia/Taipei";
 	String userid = "root";
 	String passwd = "880316";
 
 	private static final String INSERT_STMT = 
-		"INSERT INTO emp2 (ename,job,hiredate,sal,comm,deptno) VALUES (?, ?, ?, ?, ?, ?)";
+		"INSERT INTO meal_picture (meal_pic, meal_pic_info, meals_id) VALUES (?, ?, ?)";
 	private static final String GET_ALL_STMT = 
-		"SELECT empno,ename,job,hiredate,sal,comm,deptno FROM emp2 order by empno";
+		"SELECT meal_pic_id, meal_pic, meal_pic_info, meals_id FROM meal_picture order by meal_pic_id";
 	private static final String GET_ONE_STMT = 
-		"SELECT empno,ename,job,hiredate,sal,comm,deptno FROM emp2 where empno = ?";
+		"SELECT meal_pic_id, meal_pic, meal_pic_info, meals_id FROM meal_picture where meal_pic_id = ?";
 	private static final String DELETE = 
-		"DELETE FROM emp2 where empno = ?";
+		"DELETE FROM meal_picture where meal_pic_id = ?";
 	private static final String UPDATE = 
-		"UPDATE emp2 set ename=?, job=?, hiredate=?, sal=?, comm=?, deptno=? where empno = ?";
+		"UPDATE meal_picture set meal_pic=? ,meal_pic_info=? ,meals_id=? where meal_pic_id=?";
 
 	@Override
 	public void insert(MealsVO mealsVO) {
@@ -32,10 +32,10 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT_STMT);
 
-			pstmt.setInt(1, mealsVO.getMealPicId());
-			pstmt.setByte(2, mealsVO.getMealPic());
-			pstmt.setString(3, mealsVO.getMealPicInfo());
-			pstmt.setInt(4, mealsVO.getMealsId());
+			
+			pstmt.setBytes(1, mealsVO.getMealPic());
+			pstmt.setString(2, mealsVO.getMealPicInfo());
+			pstmt.setInt(3, mealsVO.getMealsId());
 			
 
 			pstmt.executeUpdate();
@@ -80,11 +80,11 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, mealsVO.getMealPicId());
-			pstmt.setByte(2, mealsVO.getMealPic());
-			pstmt.setString(3, mealsVO.getMealPicInfo());
-			pstmt.setInt(4, mealsVO.getMealsId());
-			
+//			pstmt.setInt(1, mealsVO.getMealPicId());
+			pstmt.setBytes(1, mealsVO.getMealPic());
+			pstmt.setString(2, mealsVO.getMealPicInfo());
+			pstmt.setInt(3, mealsVO.getMealsId());
+			pstmt.setInt(4, mealsVO.getMealPicId());
 
 			pstmt.executeUpdate();
 
@@ -181,10 +181,10 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects
 				mealsVO = new MealsVO();
-				mealsVO.setMealPicId(rs.getInt("mealPicId"));
-				mealsVO.setMealPic(rs.getByte("mealPic"));
-				mealsVO.setMealPicInfo(rs.getString("mealPicInfo"));
-				mealsVO.setMealsId(rs.getInt("mealsId"));
+				mealsVO.setMealPicId(rs.getInt("meal_pic_id"));
+				mealsVO.setMealPic(rs.getBytes("meal_pic"));
+				mealsVO.setMealPicInfo(rs.getString("meal_pic_info"));
+				mealsVO.setMealsId(rs.getInt("meals_id"));
 				
 			}
 
@@ -242,10 +242,10 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 			while (rs.next()) {
 				// empVO 也稱為 Domain objects
 				mealsVO = new MealsVO();
-				mealsVO.setMealPicId(rs.getInt("mealPicId"));
-				mealsVO.setMealPic(rs.getByte("mealPic"));
-				mealsVO.setMealPicInfo(rs.getString("mealPicInfo"));
-				mealsVO.setMealsId(rs.getInt("mealsId"));
+				mealsVO.setMealPicId(rs.getInt("meal_pic_id"));
+				mealsVO.setMealPic(rs.getBytes("meal_pic"));
+				mealsVO.setMealPicInfo(rs.getString("meal_pic_info"));
+				mealsVO.setMealsId(rs.getInt("meals_id"));
 				list.add(mealsVO); // Store the row in the list
 			}
 
@@ -307,7 +307,7 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 		dao.delete(1);
 
 		// 查詢
-		MealsVO mealsVO3 = dao.findByPrimaryKey(7001);
+		MealsVO mealsVO3 = dao.findByPrimaryKey(1);
 		System.out.print(mealsVO3.getMealPicId() + ",");
 		System.out.print(mealsVO3.getMealPic() + ",");
 		System.out.print(mealsVO3.getMealPicInfo() + ",");

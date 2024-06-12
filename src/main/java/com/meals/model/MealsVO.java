@@ -3,7 +3,7 @@ package com.meals.model;
 
 public class MealsVO implements java.io.Serializable{
 	private Integer mealPicId;
-	private Byte mealPic;
+	private byte[] mealPic;
 	private String mealPicInfo;
 	private Integer mealsId;
 	
@@ -15,10 +15,10 @@ public class MealsVO implements java.io.Serializable{
 	}
 	
 	
-	public Byte getMealPic() {
+	public byte[] getMealPic() {
 		return mealPic;
 	}
-	public void setMealPic(Byte mealPic) {
+	public void setMealPic(byte[] mealPic) {
 		this.mealPic = mealPic;
 	}
 	
