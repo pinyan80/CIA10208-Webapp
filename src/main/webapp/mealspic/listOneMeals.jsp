@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
-<%@ page import="com.meals.model.*"%>
+<%@ page import="com.mealspic.model.*"%>
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
 <%
-  MealsVO mealsVO = (MealsVO) request.getAttribute("mealsVO"); //EmpServlet.java(Concroller), 存入req的empVO物件
+MealsPicVO mealspicVO = (MealsPicVO) request.getAttribute("mealspicVO"); //EmpServlet.java(Concroller), 存入req的empVO物件
 %>
 
 <html>
@@ -62,10 +62,10 @@
 		<th>餐點編號</th>
 	</tr>
 	<tr>
-		<td><%=mealsVO.getMealPicId()%></td>
-		<td><img src="DBGifReader4?id=${mealsVO.mealPicId}" width="100" height="auto"></td>
-		<td><%=mealsVO.getMealPicInfo()%></td>
-		<td><%=mealsVO.getMealsId()%></td>
+		<td><%=mealspicVO.getMealPicId()%></td>
+		<td><img src="DBGifReader4?id=${mealspicVO.mealPicId}" width="100" height="auto"></td>
+		<td><%=mealspicVO.getMealPicInfo()%></td>
+		<td><%=mealspicVO.getMealsId()%></td>
 		
 	</tr>
 </table>

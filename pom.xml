@@ -63,6 +63,11 @@
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>CIA102_C_myMaven1</groupId>
+			<artifactId>CIA102_C_myMaven1</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
   </dependencies>
 
   <build>

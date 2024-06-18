@@ -1,4 +1,4 @@
-package com.meals.model;
+package com.mealspic.model;
 
 import java.io.*;
 import java.sql.*;

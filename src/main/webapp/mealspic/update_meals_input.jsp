@@ -1,9 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.meals.model.*"%>
+<%@ page import="com.mealspic.model.*"%>
 
-<% //見com.emp.controller.EmpServlet.java第163行存入req的empVO物件 (此為從資料庫取出的empVO, 也可以是輸入格式有錯誤時的empVO物件)
-   MealsVO mealsVO = (MealsVO) request.getAttribute("mealsVO");
+<%
+//見com.emp.controller.EmpServlet.java第163行存入req的empVO物件 (此為從資料庫取出的empVO, 也可以是輸入格式有錯誤時的empVO物件)
+   MealsPicVO mealspicVO = (MealsPicVO) request.getAttribute("mealspicVO");
 %>
 
 <html>
@@ -65,15 +66,15 @@
 	</ul>
 </c:if>
 
-<FORM METHOD="post" ACTION="meals.do" name="form1" enctype="multipart/form-data">
+<FORM METHOD="post" ACTION="mealspic.do" name="form1" enctype="multipart/form-data">
 <table>
     <tr>
 		<td>餐點圖片編號:<font color=red><b>*</b></font></td>
-		<td><%=mealsVO.getMealPicId()%></td>
+		<td><%=mealspicVO.getMealPicId()%></td>
 	</tr>
 <!-- 	<tr>
 		<td>餐點圖片編號:</td>
-		<td><input type="TEXT" name="mealPicId" value="<%= (mealsVO==null)? "1" : mealsVO.getMealPicId()%>" size="45"/></td>
+		<td><input type="TEXT" name="mealPicId" value="<%= (mealspicVO==null)? "1" : mealspicVO.getMealPicId()%>" size="45"/></td>
 	</tr> -->
 	<tr>
         <td>餐點圖片:</td>
@@ -81,17 +82,17 @@
     </tr>
 	<tr>
 		<td>餐點圖片名稱:</td>
-		<td><input type="TEXT" name="mealPicInfo" value="<%= (mealsVO==null)? "巧克力吐司" : mealsVO.getMealPicInfo()%>" size="45"  ></td>
+		<td><input type="TEXT" name="mealPicInfo" value="<%= (mealspicVO==null)? "巧克力吐司" : mealspicVO.getMealPicInfo()%>" size="45"  ></td>
 	</tr>
 	<tr>
 		<td>餐點編號:</td>
-		<td><input type="TEXT" name="mealsId"   value="<%= (mealsVO==null)? "1" : mealsVO.getMealsId()%>" size="45"/></td>
+		<td><input type="TEXT" name="mealsId"   value="<%= (mealspicVO==null)? "1" : mealspicVO.getMealsId()%>" size="45"/></td>
 	</tr>
 	
 </table>
 <br>
 <input type="hidden" name="action" value="update">
-<input type="hidden" name="mealPicId" value="<%=mealsVO.getMealPicId()%>">
+<input type="hidden" name="mealPicId" value="<%=mealspicVO.getMealPicId()%>">
 <input type="submit" value="送出修改"></FORM>
 </body>
 

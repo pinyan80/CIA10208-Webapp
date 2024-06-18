@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.meals.model.*"%>
+<%@ page import="com.mealspic.model.*"%>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
 <%
-    MealsService mealsSvc = new MealsService();
-    List<MealsVO> list = mealsSvc.getAll();
+MealsPicService mealspicSvc = new MealsPicService();
+    List<MealsPicVO> list = mealspicSvc.getAll();
     pageContext.setAttribute("list",list);
 %>
 
@@ -68,23 +68,23 @@
 		
 	</tr>
 	<%@ include file="page1.file" %> 
-	<c:forEach var="mealsVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+	<c:forEach var="mealspicVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 		
 		<tr>
-			<td>${mealsVO.mealPicId}</td>
-			<td><img src="DBGifReader4?id=${mealsVO.mealPicId}" width="100" height="auto"></td>
-			<td>${mealsVO.mealPicInfo}</td>
-			<td>${mealsVO.mealsId}</td>
+			<td>${mealspicVO.mealPicId}</td>
+			<td><img src="DBGifReader4?id=${mealspicVO.mealPicId}" width="100" height="auto"></td>
+			<td>${mealspicVO.mealPicInfo}</td>
+			<td>${mealspicVO.mealsId}</td>
 			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/meals/meals.do" style="margin-bottom: 0px;">
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/mealspic/mealspic.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">
-			     <input type="hidden" name="mealPicId"  value="${mealsVO.mealPicId}">
+			     <input type="hidden" name="mealPicId"  value="${mealspicVO.mealPicId}">
 			     <input type="hidden" name="action"	value="getOne_For_Update"></FORM>
 			</td>
 			<td>
-			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/meals/meals.do" style="margin-bottom: 0px;">
+			  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/mealspic/mealspic.do" style="margin-bottom: 0px;">
 			     <input type="submit" value="刪除">
-			     <input type="hidden" name="mealPicId"  value="${mealsVO.mealPicId}">
+			     <input type="hidden" name="mealPicId"  value="${mealspicVO.mealPicId}">
 			     <input type="hidden" name="action" value="delete"></FORM>
 			</td>
 		</tr>

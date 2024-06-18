@@ -1,9 +1,9 @@
-package com.meals.model;
+package com.mealspic.model;
 
 import java.util.*;
 import java.sql.*;
 
-public class MealsJDBCDAO implements MealsDAO_interface {
+public class MealsPicJDBCDAO implements MealsPicDAO_interface {
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/morningcode?serverTimezone=Asia/Taipei";
 	String userid = "root";
@@ -21,7 +21,7 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 		"UPDATE meal_picture set meal_pic=? ,meal_pic_info=? ,meals_id=? where meal_pic_id=?";
 
 	@Override
-	public void insert(MealsVO mealsVO) {
+	public void insert(MealsPicVO mealspicVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -33,9 +33,9 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 			pstmt = con.prepareStatement(INSERT_STMT);
 
 			
-			pstmt.setBytes(1, mealsVO.getMealPic());
-			pstmt.setString(2, mealsVO.getMealPicInfo());
-			pstmt.setInt(3, mealsVO.getMealsId());
+			pstmt.setBytes(1, mealspicVO.getMealPic());
+			pstmt.setString(2, mealspicVO.getMealPicInfo());
+			pstmt.setInt(3, mealspicVO.getMealsId());
 			
 
 			pstmt.executeUpdate();
@@ -69,7 +69,7 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 	}
 
 	@Override
-	public void update(MealsVO mealsVO) {
+	public void update(MealsPicVO mealspicVO) {
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -80,11 +80,11 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
 
-//			pstmt.setInt(1, mealsVO.getMealPicId());
-			pstmt.setBytes(1, mealsVO.getMealPic());
-			pstmt.setString(2, mealsVO.getMealPicInfo());
-			pstmt.setInt(3, mealsVO.getMealsId());
-			pstmt.setInt(4, mealsVO.getMealPicId());
+//			pstmt.setInt(1, mealspicVO.getMealPicId());
+			pstmt.setBytes(1, mealspicVO.getMealPic());
+			pstmt.setString(2, mealspicVO.getMealPicInfo());
+			pstmt.setInt(3, mealspicVO.getMealsId());
+			pstmt.setInt(4, mealspicVO.getMealPicId());
 
 			pstmt.executeUpdate();
 
@@ -161,9 +161,9 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 	}
 
 	@Override
-	public MealsVO findByPrimaryKey(Integer mealPicId) {
+	public MealsPicVO findByPrimaryKey(Integer mealPicId) {
 
-		MealsVO mealsVO = null;
+		MealsPicVO mealspicVO = null;
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -180,11 +180,11 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects
-				mealsVO = new MealsVO();
-				mealsVO.setMealPicId(rs.getInt("meal_pic_id"));
-				mealsVO.setMealPic(rs.getBytes("meal_pic"));
-				mealsVO.setMealPicInfo(rs.getString("meal_pic_info"));
-				mealsVO.setMealsId(rs.getInt("meals_id"));
+				mealspicVO = new MealsPicVO();
+				mealspicVO.setMealPicId(rs.getInt("meal_pic_id"));
+				mealspicVO.setMealPic(rs.getBytes("meal_pic"));
+				mealspicVO.setMealPicInfo(rs.getString("meal_pic_info"));
+				mealspicVO.setMealsId(rs.getInt("meals_id"));
 				
 			}
 
@@ -220,13 +220,13 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 				}
 			}
 		}
-		return mealsVO;
+		return mealspicVO;
 	}
 
 	@Override
-	public List<MealsVO> getAll() {
-		List<MealsVO> list = new ArrayList<MealsVO>();
-		MealsVO mealsVO = null;
+	public List<MealsPicVO> getAll() {
+		List<MealsPicVO> list = new ArrayList<MealsPicVO>();
+		MealsPicVO mealspicVO = null;
 
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -241,12 +241,12 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 
 			while (rs.next()) {
 				// empVO 也稱為 Domain objects
-				mealsVO = new MealsVO();
-				mealsVO.setMealPicId(rs.getInt("meal_pic_id"));
-				mealsVO.setMealPic(rs.getBytes("meal_pic"));
-				mealsVO.setMealPicInfo(rs.getString("meal_pic_info"));
-				mealsVO.setMealsId(rs.getInt("meals_id"));
-				list.add(mealsVO); // Store the row in the list
+				mealspicVO = new MealsPicVO();
+				mealspicVO.setMealPicId(rs.getInt("meal_pic_id"));
+				mealspicVO.setMealPic(rs.getBytes("meal_pic"));
+				mealspicVO.setMealPicInfo(rs.getString("meal_pic_info"));
+				mealspicVO.setMealsId(rs.getInt("meals_id"));
+				list.add(mealspicVO); // Store the row in the list
 			}
 
 			// Handle any driver errors
@@ -286,37 +286,37 @@ public class MealsJDBCDAO implements MealsDAO_interface {
 
 	public static void main(String[] args) {
 
-		MealsJDBCDAO dao = new MealsJDBCDAO();
+		MealsPicJDBCDAO dao = new MealsPicJDBCDAO();
 
 		// 新增
-		MealsVO mealsVO1 = new MealsVO();
+		MealsPicVO mealspicVO1 = new MealsPicVO();
 		
-		mealsVO1.setMealPicInfo("草莓吐司");
-		mealsVO1.setMealsId(1);
-		dao.insert(mealsVO1);
+		mealspicVO1.setMealPicInfo("草莓吐司");
+		mealspicVO1.setMealsId(1);
+		dao.insert(mealspicVO1);
 
 		// 修改
-		MealsVO mealsVO2 = new MealsVO();
+		MealsPicVO mealspicVO2 = new MealsPicVO();
 		
-		mealsVO2.setMealPicId(1);
-		mealsVO2.setMealPicInfo("三明治");
-		mealsVO2.setMealsId(3);
-		dao.update(mealsVO2);
+		mealspicVO2.setMealPicId(1);
+		mealspicVO2.setMealPicInfo("三明治");
+		mealspicVO2.setMealsId(3);
+		dao.update(mealspicVO2);
 
 		// 刪除
 		dao.delete(1);
 
 		// 查詢
-		MealsVO mealsVO3 = dao.findByPrimaryKey(1);
-		System.out.print(mealsVO3.getMealPicId() + ",");
-		System.out.print(mealsVO3.getMealPic() + ",");
-		System.out.print(mealsVO3.getMealPicInfo() + ",");
-		System.out.print(mealsVO3.getMealsId() + ",");
+		MealsPicVO mealspicVO3 = dao.findByPrimaryKey(1);
+		System.out.print(mealspicVO3.getMealPicId() + ",");
+		System.out.print(mealspicVO3.getMealPic() + ",");
+		System.out.print(mealspicVO3.getMealPicInfo() + ",");
+		System.out.print(mealspicVO3.getMealsId() + ",");
 		System.out.println("---------------------");
 
 		// 查詢
-		List<MealsVO> list = dao.getAll();
-		for (MealsVO aMeals : list) {
+		List<MealsPicVO> list = dao.getAll();
+		for (MealsPicVO aMeals : list) {
 			System.out.print(aMeals.getMealPicId() + ",");
 			System.out.print(aMeals.getMealPic() + ",");
 			System.out.print(aMeals.getMealPicInfo() + ",");

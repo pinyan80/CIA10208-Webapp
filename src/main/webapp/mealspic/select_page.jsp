@@ -52,7 +52,7 @@
   
   
   <li>
-    <FORM METHOD="post" ACTION="meals.do" >
+    <FORM METHOD="post" ACTION="mealspic.do" >
         <b>輸入圖片編號 (如1):</b>
         <input type="text" name="mealPicId">
         <input type="hidden" name="action" value="getOne_For_Display">
@@ -60,14 +60,14 @@
     </FORM>
   </li>
 
-  <jsp:useBean id="mealsSvc" scope="page" class="com.meals.model.MealsService" />
+  <jsp:useBean id="mealspicSvc" scope="page" class="com.mealspic.model.MealsPicService" />
    
   <li>
-     <FORM METHOD="post" ACTION="meals.do" >
+     <FORM METHOD="post" ACTION="mealspic.do" >
        <b>選擇圖片編號:</b>
        <select size="1" name="mealPicId">
-         <c:forEach var="mealsVO" items="${mealsSvc.all}" > 
-          <option value="${mealsVO.mealPicId}">${mealsVO.mealPicId}
+         <c:forEach var="mealspicVO" items="${mealspicSvc.all}" > 
+          <option value="${mealspicVO.mealPicId}">${mealspicVO.mealPicId}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">
@@ -76,11 +76,11 @@
   </li>
   
   <li>
-     <FORM METHOD="post" ACTION="meals.do" >
+     <FORM METHOD="post" ACTION="mealspic.do" >
        <b>選擇圖片名稱:</b>
        <select size="1" name="mealPicId">
-         <c:forEach var="mealsVO" items="${mealsSvc.all}" > 
-          <option value="${mealsVO.mealPicId}">${mealsVO.mealPicInfo}
+         <c:forEach var="mealspicVO" items="${mealspicSvc.all}" > 
+          <option value="${mealspicVO.mealPicId}">${mealspicVO.mealPicInfo}
          </c:forEach>   
        </select>
        <input type="hidden" name="action" value="getOne_For_Display">

@@ -1,4 +1,4 @@
-package com.meals.controller;
+package com.mealspic.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,11 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import com.meals.model.MealsService;
-import com.meals.model.MealsVO;
+import com.mealspic.model.MealsPicService;
+import com.mealspic.model.MealsPicVO;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 5 * 1024 * 1024, maxRequestSize = 5 * 5 * 1024 * 1024)
-public class MealsServlet extends HttpServlet {
+public class MealsPicServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
@@ -61,8 +61,8 @@ public class MealsServlet extends HttpServlet {
 			}
 
 			/*************************** 2.開始查詢資料 *****************************************/
-			MealsService mealsSvc = new MealsService();
-			MealsVO mealsVO = mealsSvc.getOneMeals(mealPicId);
+			MealsPicService mealspicSvc = new MealsPicService();
+			MealsPicVO mealspicVO = mealspicSvc.getOneMeals(mealPicId);
 			if (mealPicId == null) {
 				errorMsgs.add("查無資料");
 			}
@@ -74,8 +74,8 @@ public class MealsServlet extends HttpServlet {
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("mealsVO", mealsVO); // 資料庫取出的mealsVO物件,存入req
-			String url = "/meals/listOneMeals.jsp";
+			req.setAttribute("mealspicVO", mealspicVO); // 資料庫取出的mealspicVO物件,存入req
+			String url = "/mealspic/listOneMeals.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
 			successView.forward(req, res);
 		}
@@ -91,12 +91,12 @@ public class MealsServlet extends HttpServlet {
 			Integer mealPicId = Integer.valueOf(req.getParameter("mealPicId"));
 
 			/*************************** 2.開始查詢資料 ****************************************/
-			MealsService mealsSvc = new MealsService();
-			MealsVO mealsVO = mealsSvc.getOneMeals(mealPicId);
+			MealsPicService mealspicSvc = new MealsPicService();
+			MealsPicVO mealspicVO = mealspicSvc.getOneMeals(mealPicId);
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
-			req.setAttribute("mealsVO", mealsVO); // 資料庫取出的mealsVO物件,存入req
-			String url = "/meals/update_meals_input.jsp";
+			req.setAttribute("mealspicVO", mealspicVO); // 資料庫取出的mealspicVO物件,存入req
+			String url = "/mealspic/update_meals_input.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_meals_input.jsp
 			successView.forward(req, res);
 		}
@@ -112,24 +112,39 @@ public class MealsServlet extends HttpServlet {
 			Integer mealPicId = Integer.valueOf(req.getParameter("mealPicId").trim());
 
 			//圖片
-			Part imageFilePart = req.getPart("mealPic");
-			InputStream imgIs = null;
+			InputStream imgIs = req.getPart("mealPic").getInputStream();
 			byte[] mealPic = null;
-			if (imageFilePart != null && imageFilePart.getSize() > 0) {
-				String contentType = imageFilePart.getContentType();
-				if ("image/jpeg".equals(contentType) || "image/png".equals(contentType)
-						|| "image/gif".equals(contentType)) {
-					imgIs = imageFilePart.getInputStream();
-					mealPic = new byte[imgIs.available()];
-					imgIs.read(mealPic);
-				} else {
-					errorMsgs.add("upfile1檔案格式錯誤!");
-				}
-			} else {
-				MealsService mealsSvc2 = new MealsService();
-				mealPic = mealsSvc2.getOneMeals(mealPicId).getMealPic();
-			}
+			
+			if(imgIs.available()!=0) {
+				mealPic =new byte[imgIs.available()];
+                imgIs.read(mealPic);
+                imgIs.close();
+            }else {
+            	MealsPicService mealspicSvc2 = new MealsPicService();
+				mealPic = mealspicSvc2.getOneMeals(mealPicId).getMealPic();
+            }
+					
+//			Part imageFilePart = req.getPart("mealPic");
+//			InputStream imgIs = null;
+//			byte[] mealPic = null;
+			
+//			if (imageFilePart != null && imageFilePart.getSize() > 0) {
+//				String contentType = imageFilePart.getContentType();
+//				if ("image/jpeg".equals(contentType) || "image/png".equals(contentType)
+//						|| "image/gif".equals(contentType)) {
+//					imgIs = imageFilePart.getInputStream();
+//					mealPic = new byte[imgIs.available()];
+//					imgIs.read(mealPic);
+//				} else {
+//					errorMsgs.add("檔案格式錯誤!");
+//				}
+//			} else {
+//				MealsPicService mealspicSvc2 = new MealsPicService();
+//				mealPic = mealspicSvc2.getOneMeals(mealPicId).getMealPic();
+//			}
 
+			
+			
 			String mealPicInfo = req.getParameter("mealPicInfo");
 			String mealPicInfoReg = "^[(\u4e00-\u9fa5)]{1,10}$";
 			if (mealPicInfo == null || mealPicInfo.trim().length() == 0) {
@@ -140,27 +155,27 @@ public class MealsServlet extends HttpServlet {
 
 			Integer mealsId = Integer.valueOf(req.getParameter("mealsId").trim());
 
-			MealsVO mealsVO = new MealsVO();
-			mealsVO.setMealPicId(mealPicId);
-			mealsVO.setMealPic(mealPic);
-			mealsVO.setMealPicInfo(mealPicInfo);
-			mealsVO.setMealsId(mealsId);
+			MealsPicVO mealspicVO = new MealsPicVO();
+			mealspicVO.setMealPicId(mealPicId);
+			mealspicVO.setMealPic(mealPic);
+			mealspicVO.setMealPicInfo(mealPicInfo);
+			mealspicVO.setMealsId(mealsId);
 
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				req.setAttribute("mealsVO", mealsVO); // 含有輸入格式錯誤的mealsVO物件,也存入req
+				req.setAttribute("mealspicVO", mealspicVO); // 含有輸入格式錯誤的mealspicVO物件,也存入req
 				RequestDispatcher failureView = req.getRequestDispatcher("/meals/update_meals_input.jsp");
 				failureView.forward(req, res);
 				return; // 程式中斷
 			}
 
 			/*************************** 2.開始修改資料 *****************************************/
-			MealsService mealsSvc = new MealsService();
-			mealsVO = mealsSvc.updateMeals(mealPicId, mealPic, mealPicInfo, mealsId);
+			MealsPicService mealspicSvc = new MealsPicService();
+			mealspicVO = mealspicSvc.updateMeals(mealPicId, mealPic, mealPicInfo, mealsId);
 
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("mealsVO", mealsVO); // 資料庫update成功後,正確的的mealsVO物件,存入req
-			String url = "/meals/listOneMeals.jsp";
+			req.setAttribute("mealspicVO", mealspicVO); // 資料庫update成功後,正確的的mealspicVO物件,存入req
+			String url = "/mealspic/listOneMeals.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 			successView.forward(req, res);
 		}
@@ -201,26 +216,26 @@ public class MealsServlet extends HttpServlet {
 
 			Integer mealsId = Integer.valueOf(req.getParameter("mealsId").trim());
 
-			MealsVO mealsVO = new MealsVO();
-//			mealsVO.setMealPicId(mealPicId);
-			mealsVO.setMealPic(mealPic);
-			mealsVO.setMealPicInfo(mealPicInfo);
-			mealsVO.setMealsId(mealsId);
+			MealsPicVO mealspicVO = new MealsPicVO();
+//			mealspicVO.setMealPicId(mealPicId);
+			mealspicVO.setMealPic(mealPic);
+			mealspicVO.setMealPicInfo(mealPicInfo);
+			mealspicVO.setMealsId(mealsId);
 
 			// Send the use back to the form, if there were errors
 			if (!errorMsgs.isEmpty()) {
-				req.setAttribute("mealsVO", mealsVO); // 含有輸入格式錯誤的mealsVO物件,也存入req
+				req.setAttribute("mealspicVO", mealspicVO); // 含有輸入格式錯誤的mealspicVO物件,也存入req
 				RequestDispatcher failureView = req.getRequestDispatcher("/meals/addMeals.jsp");
 				failureView.forward(req, res);
 				return;
 			}
 
 			/*************************** 2.開始新增資料 ***************************************/
-			MealsService mealsSvc = new MealsService();
-			mealsVO = mealsSvc.addMeals(mealPic, mealPicInfo, mealsId);
+			MealsPicService mealspicSvc = new MealsPicService();
+			mealspicVO = mealspicSvc.addMeals(mealPic, mealPicInfo, mealsId);
 
 			/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
-			String url = "/meals/listAllMeals.jsp";
+			String url = "/mealspic/listAllMeals.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllMeals.jsp
 			successView.forward(req, res);
 		}
@@ -236,11 +251,11 @@ public class MealsServlet extends HttpServlet {
 			Integer mealPicId = Integer.valueOf(req.getParameter("mealPicId"));
 
 			/*************************** 2.開始刪除資料 ***************************************/
-			MealsService mealsSvc = new MealsService();
-			mealsSvc.deleteMeals(mealPicId);
+			MealsPicService mealspicSvc = new MealsPicService();
+			mealspicSvc.deleteMeals(mealPicId);
 
 			/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
-			String url = "/meals/listAllMeals.jsp";
+			String url = "/mealspic/listAllMeals.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
 			successView.forward(req, res);
 		}
